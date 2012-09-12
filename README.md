@@ -41,6 +41,3 @@ Links
 Author Contact
 --------------
 Gaston Sanchez (gaston.stat at gmail.com)
-
-
-
