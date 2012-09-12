@@ -12,6 +12,8 @@ Requirements and Installation
 *  DiscriMiner (latest version from github)
 
    install.packages("devtools") 
+
+   library(devtools)
    
    install_github('DiscriMiner',  username='gastonstat')
 
