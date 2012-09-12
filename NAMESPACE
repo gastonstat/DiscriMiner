@@ -1,0 +1,52 @@
+# functions
+export(
+  binarize,
+  getWithin,
+  withinSS,
+  withinCov,
+  betweenSS,
+  betweenCov,
+  totalSS,
+  totalCov,
+  easyMCA,
+  groupMeans,
+  groupVars,
+  groupStds,
+  groupMedians,
+  groupQuants,
+  discPower,
+  corRatio,
+  FRatio,
+  desDA,
+  geoDA,
+  linDA,
+  quaDA,
+  plsDA,
+  disqual,
+  classify)
+
+# S3 methods
+S3method(print, qualmca)
+S3method(print, desda)
+S3method(print, geoda)
+S3method(print, linda)
+S3method(print, quada)
+S3method(print, plsda)
+S3method(print, disqual)
+S3method(plot, plsda)
+
+# Internal Functions (NOT to be called by the user):
+# my_groupMeans
+# my_betweenCov
+# my_withinCov
+# my_verify
+# my_discFunctions
+# my_geoDA
+# my_linDA
+# my_quaDA
+# my_plsDA
+# my_catDA
+# my_tdc
+# my_mca
+
+
