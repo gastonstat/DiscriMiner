@@ -11,7 +11,7 @@ Requirements and Installation
 
 *  DiscriMiner (latest version from github)
 
-   download.file("http://github.com/downloads/gastonstat/DiscriMiner/DiscriMiner_0.1-20.tar.gz", "DiscriMiner_0.1-20.tar.gz")
+   download.file("https://github.com/downloads/gastonstat/DiscriMiner/DiscriMiner_0.1-20.tar.gz", "DiscriMiner_0.1-20.tar.gz")
    
    install.packages("DiscriMiner_0.1-20.tar.gz", repos=NULL, type="source")
 
