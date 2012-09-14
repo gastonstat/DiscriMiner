@@ -1,4 +1,4 @@
-DiscriMiner package (version 0.1-20)
+R package DiscriMiner
 ============================
 
 This is a very nice package which provides functions for Discriminant Analysis and Classification purposes. Among the covered topics one can find methods for descriptive, geometric, linear, quadratic, PLS, as well as qualitative discriminant analyses.
@@ -35,9 +35,7 @@ Links
 -----
 [DiscriMiner package github](http://github.com/gastonstat/DiscriMiner)
 
-[The R Project](http://www.r-project.org/)
-
-[gaston sanchez](http://www.gastonsanchez.com)
+[DiscriMiner slides](http://www.gastonsanchez.com/discriminer)
 
 
 Author Contact
