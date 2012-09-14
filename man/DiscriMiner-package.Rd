@@ -11,15 +11,15 @@ DiscriMiner contains several functions for Discriminant Analysis and Classificat
  \tabular{ll}{
   Package: \tab DiscriMiner\cr
   Type: \tab Package\cr
-  Version: \tab 0.1-20\cr
-  Date: \tab 2012-09-12\cr
+  Version: \tab 0.1-21\cr
+  Date: \tab 2012-09-14\cr
   License: \tab GPL-3\cr
  }
 }
 \author{
   Gaston Sanchez
 
-  Maintainer (i.e. complain to) <gaston.sanchez@berkeley.edu>
+  Maintainer <gaston.stat@gmail.com>
 }
 \references{
   \url{http://www.gastonsanchez.com/discriminer}

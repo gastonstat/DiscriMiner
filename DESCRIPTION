@@ -1,12 +1,12 @@
 Package: DiscriMiner
 Type: Package
 Title: Tools of the Trade for Discriminant Analysis
-Version: 0.1-20
-Date: 2012-09-12
+Version: 0.1-21
+Date: 2012-09-14
 Depends: R (>= 2.14.0)
 Suggests: MASS, FactoMineR
 Author: Gaston Sanchez
-Maintainer: complain to <gaston.sanchez@berkeley.edu>
+Maintainer: <gaston.stat@gmail.com>
 Description: Functions for Discriminant Analysis and Classification purposes covering various methods such as descriptive, geometric, linear, quadratic, PLS, as well as qualitative discriminant analyses
 License: GPL-3
 URL: http://www.gastonsanchez.com/discriminer
