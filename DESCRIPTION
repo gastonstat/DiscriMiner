@@ -1,9 +1,9 @@
 Package: DiscriMiner
 Type: Package
 Title: Tools of the Trade for Discriminant Analysis
-Version: 0.1-22
-Date: 2012-09-14
-Depends: R (>= 2.14.0)
+Version: 0.1-23
+Date: 2012-12-20
+Depends: R (>= 2.15.0)
 Suggests: MASS, FactoMineR
 Author: Gaston Sanchez
 Maintainer: Gaston Sanchez <gaston.stat@gmail.com>

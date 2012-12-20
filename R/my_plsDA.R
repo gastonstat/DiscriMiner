@@ -1,5 +1,5 @@
 my_plsDA <- 
-function(X, y, learn, test, autosel, comps)
+function(X, y, learn, test, autosel, comps, scaled)
 {
   # Perform a PLS discriminant analysis
   # X: matrix or data.frame with explanatory variables
@@ -8,6 +8,7 @@ function(X, y, learn, test, autosel, comps)
   # test: vector of testing observations
   # autosel: logical indicating automatic selection of PLS comps
   # comps: number of PLS components (only when autosel=FALSE)
+  # scaled: logical indicating whether to scale the data
   
   ## prepare ingredients
   ntest = length(test)
@@ -30,7 +31,7 @@ function(X, y, learn, test, autosel, comps)
   }  
   if (nc == n) nc = n - 1
   # standardizing data
-  X.old = scale(X[learn,])
+  X.old = scale(X[learn,], scale=scaled)
   Y.old = scale(Y)
   # creating matrices to store results
   Wh = matrix(0, p, nc)
@@ -53,7 +54,7 @@ function(X, y, learn, test, autosel, comps)
     repeat
     {
       w.new = t(X.old) %*% u.new / sum(u.new^2)
-      w.new = w.new / sqrt(sum(w.new^2))# normalize w.old
+      w.new = w.new / sqrt(sum(w.new^2)) # normalize w.old
       t.new = X.old %*% w.new
       c.new = t(Y.old) %*% t.new / sum(t.new^2)
       u.new = Y.old %*% c.new / sum(c.new^2)

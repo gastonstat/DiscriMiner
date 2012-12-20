@@ -11,8 +11,8 @@ DiscriMiner contains several functions for Discriminant Analysis and Classificat
  \tabular{ll}{
   Package: \tab DiscriMiner\cr
   Type: \tab Package\cr
-  Version: \tab 0.1-22\cr
-  Date: \tab 2012-09-14\cr
+  Version: \tab 0.1-23\cr
+  Date: \tab 2012-12-20\cr
   License: \tab GPL-3\cr
  }
 }

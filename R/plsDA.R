@@ -1,6 +1,6 @@
 plsDA <- 
 function(variables, group, autosel = TRUE, comps = 2,
-         validation = NULL, learn = NULL, test = NULL)
+         validation = NULL, learn = NULL, test = NULL, scaled=TRUE)
 {
   # Perform a PLS discriminant analysis
   # variables: matrix or data.frame with explanatory variables
@@ -10,6 +10,7 @@ function(variables, group, autosel = TRUE, comps = 2,
   # validation: NULL, "crossval", "learntest"
   # learn: vector of learn-set
   # test: vector of test-set
+  # scaled: logical indicating whether to scale the data
   
   # check inputs
   verify_Xy = my_verify(variables, group, na.rm=FALSE)
@@ -28,7 +29,7 @@ function(variables, group, autosel = TRUE, comps = 2,
   } else {
     vali = validation %in% c("crossval", "learntest")
     if (!vali)
-      stop("nIncorrect type of validation")
+      stop("\nIncorrect type of validation")
   }
   
   # how many observations and variables
@@ -55,7 +56,7 @@ function(variables, group, autosel = TRUE, comps = 2,
     if (any(test) <= 0 || any(test) > n)
       stop("\nsubscript out of bounds in 'test' set")
     # apply plsDA
-    get_plsda = my_plsDA(X, y, learn, test, autosel, comps)
+    get_plsda = my_plsDA(X, y, learn, test, autosel, comps, scaled)
     # misclassification error rate
     err = 1 - sum(diag(get_plsda$conf))/length(test)
   }

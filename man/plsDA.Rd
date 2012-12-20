@@ -7,7 +7,7 @@
   Performs a Partial Least Squares (PLS) Discriminant Analysis
 }
 \usage{
-plsDA(variables, group, autosel = TRUE, comps = 2, validation = NULL, learn = NULL, test = NULL)
+plsDA(variables, group, autosel = TRUE, comps = 2, validation = NULL, learn = NULL, test = NULL, scaled = TRUE)
 }
 \arguments{
   \item{variables}{matrix or data frame with explanatory variables}
@@ -17,6 +17,7 @@ plsDA(variables, group, autosel = TRUE, comps = 2, validation = NULL, learn = NU
   \item{validation}{type of validation, either \code{NULL} or \code{"learntest"}. Default \code{NULL}}
   \item{learn}{optional vector of indices for a learn-set. Only used when \code{validation="learntest"}. Default \code{NULL}}
   \item{test}{optional vector of indices for a test-set. Only used when \code{validation="learntest"}. Default \code{NULL}}
+  \item{scaled}{logical indicating whether to scale the data (default \code{TRUE})}
 }
 \details{
   When \code{validation=NULL} leave-one-out (loo) cross-validation is performed. \cr
