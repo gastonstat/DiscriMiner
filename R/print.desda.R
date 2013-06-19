@@ -1,3 +1,4 @@
+#' @S3method print desda
 print.desda <-
 function(x, ...)
 {

@@ -1,3 +1,27 @@
+#' Between-class Sum of Squares Matrix
+#' 
+#' Calculates between-class sum of squares and cross product matrix (a.k.a.
+#' between-class scatter matrix)
+#' 
+#' 
+#' @param variables matrix or data frame with explanatory variables (No missing
+#' values are allowed)
+#' @param group vector or factor with group membership (No missing values are
+#' allowed)
+#' @author Gaston Sanchez
+#' @seealso \code{\link{betweenCov}}, \code{\link{withinSS}},
+#' \code{\link{totalSS}}
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # load iris dataset
+#'   data(iris)
+#'   
+#'   # between-class scatter matrix
+#'   betweenSS(iris[,1:4], iris[,5])
+#'   }
+#' 
 betweenSS <-
 function(variables, group)
 {

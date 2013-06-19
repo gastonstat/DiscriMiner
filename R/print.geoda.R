@@ -1,3 +1,4 @@
+#' @S3method print geoda
 print.geoda <- 
 function(x, ...)
 {

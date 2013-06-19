@@ -1,3 +1,31 @@
+#' Discriminant Power
+#' 
+#' Measures Discriminant Power of explanatory variables
+#' 
+#' No missing values are allowed
+#' 
+#' @param variables matrix or data frame with explanatory variables
+#' @param group vector or factor with group membership
+#' @return A data frame containing the following columns
+#' @return \item{correl_ratio}{Correlation Ratios}
+#' @return \item{wilks_lambda}{Wilks Lambda}
+#' @return \item{F_statistic}{F-statistic}
+#' @return \item{p_value}{p-value of F-statistic}
+#' @author Gaston Sanchez
+#' @seealso \code{\link{corRatio}}, \code{\link{FRatio}}
+#' @references Tenenhaus M. (2007) \emph{Statistique}. Dunod, Paris.
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # bordeaux wines dataset
+#'   data(bordeaux)
+#' 
+#'   # discriminant power
+#'   dp = discPower(bordeaux[,2:5], bordeaux$quality)
+#'   dp
+#'   }
+#' 
 discPower <-
 function(variables, group)
 {

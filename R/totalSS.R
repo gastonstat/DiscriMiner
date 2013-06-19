@@ -1,3 +1,24 @@
+#' Total Sum of Squares Matrix
+#' 
+#' Calculates the total sum of squares and cross product matrix (a.k.a. total
+#' scatter matrix)
+#' 
+#' 
+#' @param variables matrix or data frame with explanatory variables
+#' @author Gaston Sanchez
+#' @seealso \code{\link{totalCov}}, \code{\link{betweenSS}},
+#' \code{\link{withinSS}}
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # load iris dataset
+#'   data(iris)
+#'   
+#'   # total scatter matrix
+#'   totalSS(iris[,1:4])
+#'   }
+#' 
 totalSS <-
 function(variables)
 {

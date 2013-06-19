@@ -1,10 +1,47 @@
+#' Classification function
+#' 
+#' Classify provided observations based on a given Discriminant object
+#' 
+#' A \code{DA_object} is a discriminant analysis (DA) object obtained from a
+#' geometric predictive DA (class \code{"geoda"}), a linear DA (class
+#' \code{"linda"}), a quadratic DA (class \code{"quada"}), or a DISQUAL
+#' analysis (class \code{"disqual"})
+#' 
+#' @param DA_object discriminant analysis object
+#' @param newdata vector or matrix or data frame with variables for which their
+#' classes will be calculated
+#' @return A list with the following elements
+#' @return \item{scores}{discriminant scores for each observation}
+#' @return \item{pred_class}{predicted class}
+#' @author Gaston Sanchez
+#' @seealso \code{\link{geoDA}}, \code{\link{linDA}}, \code{\link{quaDA}},
+#' \code{\link{plsDA}}, \code{\link{disqual}}
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # load iris dataset
+#'   data(iris)
+#' 
+#'   # linear discriminant analysis
+#'   my_lin1 = linDA(iris[,1:4], iris$Species)
+#' 
+#'   # select a sample of 15 observations
+#'   set.seed(111)
+#'   obs = sample(1:nrow(iris), 15)
+#'   some_data = iris[obs, 1:4]
+#'   
+#'   # classify some_data
+#'   get_classes = classify(my_lin1, some_data)
+#'   get_classes
+#'   
+#'   # compare the results against original class
+#'   table(iris$Species[obs], get_classes$pred_class)
+#'   }
+#' 
 classify <- 
 function(DA_object, newdata)
 {
-  # classify new data using discrimination rule of a DA_object
-  # DA_object: oject of class "discriminant analysis"
-  # newdata: vector, matrix or data frame with variables
-  
   ## Check arguments
   # make sure DA_object is valid
   DA_classes = c("geoda", "linda", "quada", "plsda", "disqual")
@@ -29,7 +66,7 @@ function(DA_object, newdata)
     # disqual method
     # newdata as binarized matrix (0s and 1s)
     if (!any(newdata %in% c(0,1)))
-      stop("'newdata' must contain only 0's and 1's (binary format)")
+      stop("\n'newdata' must contain only 0's and 1's (binary format)")
     # number of variables
     if (dim(newdata)[1] == 1)
     {

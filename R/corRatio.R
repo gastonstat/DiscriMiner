@@ -1,3 +1,26 @@
+#' Correlation Ratio
+#' 
+#' Calculates the correlation ratio between a quantitaive variable and a
+#' qualitative variable
+#' 
+#' No missing values are allowed
+#' 
+#' @param variable a single quantitative variable
+#' @param group vector or factor with group memberships (qualitative variable)
+#' @author Gaston Sanchez
+#' @seealso \code{\link{FRatio}}, \code{\link{discPower}}
+#' @references Tenenhaus, M. (2007) \emph{Statistique}. Dunod, Paris.
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # iris dataset 
+#'   data(iris)
+#'   
+#'   # correlation ratio between Petal-Length and Species
+#'   corRatio(iris$Petal.Length, iris$Species)
+#'   }
+#' 
 corRatio <-
 function(variable, group)
 {

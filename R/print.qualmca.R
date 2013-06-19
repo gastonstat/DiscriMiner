@@ -1,3 +1,4 @@
+#' @S3method print qualmca
 print.qualmca <- 
 function(x, ...)
 {

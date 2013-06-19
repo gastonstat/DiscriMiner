@@ -1,3 +1,4 @@
+#' @S3method plot plsda
 plot.plsda <-
 function(x, ...)
 {

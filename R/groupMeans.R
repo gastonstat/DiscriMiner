@@ -1,3 +1,28 @@
+#' Group Means
+#' 
+#' Calculates means for each group
+#' 
+#' 
+#' @param variables matrix or data frame with explanatory variables (may
+#' contain missing values)
+#' @param group vector or factor with group memberships
+#' @param na.rm logical indicating whether missing values should be removed
+#' @return matrix of group means (with variables in the rows, and groups in the
+#' columns)
+#' @author Gaston Sanchez
+#' @seealso \code{\link{groupVars}}, \code{\link{groupStds}},
+#' \code{\link{groupMedians}}, \code{\link{groupQuants}}
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # dataset iris
+#'   data(iris)
+#' 
+#'   # group means
+#'   groupMeans(iris[,1:4], iris[,5])
+#'   }
+#' 
 groupMeans <-
 function(variables, group, na.rm=FALSE)
 {

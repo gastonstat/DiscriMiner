@@ -1,3 +1,27 @@
+#' F-Statistic Ratio
+#' 
+#' Calcualtes the F-statistic between a quantitative variable and a qualitative
+#' variable
+#' 
+#' 
+#' @param variable a quantitative variable
+#' @param group a vector or factor with group memberships (i.e. qualitative
+#' variable)
+#' @return F-statistic and its p-value
+#' @author Gaston Sanchez
+#' @seealso \code{\link{discPower}}, \code{\link{corRatio}}
+#' @references Tenenhaus M. (2007) \emph{Statistique}. Dunod, Paris.
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # load bordeaux wines dataset
+#'   data(bordeaux)
+#' 
+#'   # F-statistic ratio between temperature and quality
+#'   FRatio(bordeaux$temperature, bordeaux$quality)
+#'   }
+#' 
 FRatio <-
 function(variable, group)
 {

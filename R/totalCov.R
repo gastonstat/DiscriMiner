@@ -1,3 +1,30 @@
+#' Total Covariance Matrix
+#' 
+#' Calculates total covariance matrix
+#' 
+#' When \code{div_by_n=TRUE} the covariance matrices are divided by n (number
+#' of observations), otherwise they are divided by n-1
+#' 
+#' @param variables matrix or data frame with explanatory variables (No missing
+#' values are allowed)
+#' @param div_by_n logical indicating division by number of observations
+#' @author Gaston Sanchez
+#' @seealso \code{\link{totalSS}}, \code{\link{betweenCov}},
+#' \code{\link{withinCov}}
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # load iris dataset
+#'   data(iris)
+#'   
+#'   # total covariance matrix (dividing by n-1)
+#'   totalCov(iris[,1:4])
+#' 
+#'   # total covariance matrix (dividing by n)
+#'   totalCov(iris[,1:4], div_by_n=TRUE)
+#'   }
+#' 
 totalCov <-
 function(variables, div_by_n=FALSE)
 {

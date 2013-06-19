@@ -3,12 +3,13 @@ R package DiscriMiner
 
 This is a very nice package which provides functions for Discriminant Analysis and Classification purposes. Among the covered topics one can find methods for descriptive, geometric, linear, quadratic, PLS, as well as qualitative discriminant analyses.
 
-Requirements and Installation
+Installation
 -----------------------------
 DiscriMiner (stable version from CRAN)
 ```
 install.packages("DiscriMiner")
 ```
+
 DiscriMiner (latest version from github)
 ```
 install.packages("devtools") 

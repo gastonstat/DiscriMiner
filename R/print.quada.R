@@ -1,3 +1,4 @@
+#' @S3method print quada
 print.quada <- 
 function(x, ...)
 {

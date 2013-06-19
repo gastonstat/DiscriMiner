@@ -1,3 +1,4 @@
+#' @S3method print linda
 print.linda <- 
 function(x, ...)
 {

@@ -1,3 +1,4 @@
+#' @S3method print disqual
 print.disqual <- 
 function(x, ...)
 {

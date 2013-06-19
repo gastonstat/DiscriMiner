@@ -1,3 +1,4 @@
+#' @S3method print plsda
 print.plsda <- 
 function(x, ...)
 {

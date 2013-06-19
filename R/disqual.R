@@ -1,3 +1,63 @@
+#' Discriminant Analysis on Qualitative Variables
+#' 
+#' Implementation of the DISQUAL methodology. Disqual performs a Fishers
+#' Discriminant Analysis on components from a Multiple Correspondence Analysis
+#' 
+#' When \code{validation=NULL} there is no validation \cr When
+#' \code{validation="crossval"} cross-validation is performed by randomly
+#' separating the observations in ten groups. \cr When
+#' \code{validation="learntest"} validationi is performed by providing a
+#' learn-set and a test-set of observations. \cr
+#' 
+#' @param variables data frame with qualitative explanatory variables (coded as
+#' factors)
+#' @param group vector or factor with group memberships
+#' @param validation type of validation, either \code{"crossval"} or
+#' \code{"learntest"}. Default \code{NULL}
+#' @param learn optional vector of indices for a learn-set. Only used when
+#' \code{validation="learntest"}. Default \code{NULL}
+#' @param test optional vector of indices for a test-set. Only used when
+#' \code{validation="learntest"}. Default \code{NULL}
+#' @param autosel logical indicating automatic selection of MCA components
+#' @param prob probability level for automatic selection of MCA components.
+#' Default \code{prob = 0.05}
+#' @return An object of class \code{"disqual"}, basically a list with the
+#' following elements:
+#' @return \item{raw_coefs}{raw coefficients of discriminant functions}
+#' @return \item{norm_coefs}{normalizaed coefficients of discriminant functions,
+#' ranging from 0 - 1000}
+#' @return \item{confusion}{confusion matrix}
+#' @return \item{scores}{discriminant scores for each observation}
+#' @return \item{classification}{assigned class}
+#' @return \item{error_rate}{misclassification error rate}
+#' @author Gaston Sanchez
+#' @seealso \code{\link{easyMCA}}, \code{\link{classify}},
+#' \code{\link{binarize}}
+#' @references Lebart L., Piron M., Morineau A. (2006) \emph{Statistique
+#' Exploratoire Multidimensionnelle}. Dunod, Paris.
+#' 
+#' Saporta G. (2006) \emph{Probabilites, analyse des donnees et statistique}.
+#' Editions Technip, Paris.
+#' 
+#' Saporta G., Niang N. (2006) Correspondence Analysis and Classification. In
+#' \emph{Multiple Correspondence Analysis and Related Methods}, Eds. Michael
+#' Greenacre and Jorg Blasius, 371-392. Chapman and Hall/CRC
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # load insurance dataset
+#'   data(insurance)
+#' 
+#'   # disqual analysis with no validation
+#'   my_disq1 = disqual(insurance[,-1], insurance[,1], validation=NULL)
+#'   my_disq1
+#'   
+#'   # disqual analysis with cross-validation
+#'   my_disq2 = disqual(insurance[,-1], insurance[,1], validation="crossval")
+#'   my_disq2
+#'   }
+#' 
 disqual <- 
 function(variables, group, validation = NULL, 
          learn = NULL, test = NULL, autosel = TRUE, prob = 0.05)

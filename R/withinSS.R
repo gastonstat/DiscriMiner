@@ -1,3 +1,27 @@
+#' Within-class Sum of Squares Matrix
+#' 
+#' Calculates within-class sum of squares and cross product matrix (a.k.a.
+#' within-class scatter matrix)
+#' 
+#' 
+#' @param variables matrix or data frame with explanatory variables (No missing
+#' values are allowed)
+#' @param group vector or factor with group memberships (No missing values are
+#' allowed)
+#' @author Gaston Sanchez
+#' @seealso \code{\link{withinCov}}, \code{\link{betweenSS}},
+#' \code{\link{totalSS}}
+#' @export
+#' @examples
+#' 
+#'   \dontrun{
+#'   # load iris dataset
+#'   data(iris)
+#'   
+#'   # within-class scatter matrix
+#'   withinSS(iris[,1:4], iris[,5])
+#'   }
+#' 
 withinSS <-
 function(variables, group)
 {
