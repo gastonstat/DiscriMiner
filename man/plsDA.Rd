@@ -35,7 +35,7 @@
   Avialable options are \code{"LOO"} (Leave-One-Out) and
   \code{"LKO"} (Leave-K fold-Out)}
 
-  \item{k}{fold left out if using LKO (useually 7 or 10)}
+  \item{k}{fold left out if using LKO (usually 7 or 10)}
 }
 \value{
   An object of class \code{"plsda"}, basically a list with

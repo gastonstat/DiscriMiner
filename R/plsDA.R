@@ -22,7 +22,7 @@
 #' @param cv string indicating the type of crossvalidation.
 #' Avialable options are \code{"LOO"} (Leave-One-Out)
 #' and \code{"LKO"} (Leave-K fold-Out)
-#' @param k fold left out if using LKO (useually 7 or 10)
+#' @param k fold left out if using LKO (usually 7 or 10)
 #' @return An object of class \code{"plsda"}, basically a list with the
 #' following elements:
 #' @return \item{functions}{table with discriminant functions}
