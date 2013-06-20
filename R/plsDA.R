@@ -1,8 +1,9 @@
-#' PLS Discriminant Analysis
+#' @title PLS Discriminant Analysis
 #' 
-#' Performs a Partial Least Squares (PLS) Discriminant Analysis
+#' @description Performs a Partial Least Squares (PLS) Discriminant Analysis
+#' by giving the option to include a random leave-k fold out cross validation
 #' 
-#' When \code{validation=NULL} leave-one-out (loo) cross-validation is
+#' @details When \code{validation=NULL} leave-one-out (loo) cross-validation is
 #' performed. \cr When \code{validation="learntest"} validation is performed by
 #' providing a learn-set and a test-set of observations. \cr
 #' 
@@ -18,13 +19,17 @@
 #' \code{validation="learntest"}. Default \code{NULL}
 #' @param test optional vector of indices for a test-set. Only used when
 #' \code{validation="learntest"}. Default \code{NULL}
-#' @param scaled logical indicating whether to scale the data (default
-#' \code{TRUE})
+#' @param cv string indicating the type of crossvalidation.
+#' Avialable options are \code{"LOO"} (Leave-One-Out)
+#' and \code{"LKO"} (Leave-K fold-Out)
+#' @param k fold left out if using LKO (useually 7 or 10)
 #' @return An object of class \code{"plsda"}, basically a list with the
 #' following elements:
 #' @return \item{functions}{table with discriminant functions}
 #' @return \item{confusion}{confusion matrix}
 #' @return \item{scores}{discriminant scores for each observation}
+#' @return \item{loadings}{loadings}
+#' @return \item{y.loadings}{y loadings}
 #' @return \item{classification}{assigned class}
 #' @return \item{error_rate}{misclassification error rate}
 #' @return \item{components}{PLS components}
@@ -33,7 +38,7 @@
 #' @return \item{VIP}{Variable Importance for Projection}
 #' @return \item{comp_vars}{correlations between components and variables}
 #' @return \item{comp_group}{correlations between components and groups}
-#' @author Gaston Sanchez
+#' @author Charles Determan Jr, Gaston Sanchez
 #' @seealso \code{\link{classify}}, \code{\link{geoDA}}, \code{\link{linDA}},
 #' \code{\link{quaDA}}
 #' @references Tenenhaus M. (1998) \emph{La Regression PLS}. Editions Technip,
@@ -64,25 +69,16 @@
 #'   # linear discriminant analysis with learn-test validation
 #'   learning = c(1:40, 51:90, 101:140)
 #'   testing = c(41:50, 91:100, 141:150)
-#'   my_pls3 = plsDA(iris[,1:4], iris$Species, validation="learntest", learn=learning, test=testing)
+#'   my_pls3 = plsDA(iris[,1:4], iris$Species, validation="learntest", 
+#'       learn=learning, test=testing)
 #'   my_pls3$confusion
 #'   my_pls3$error_rate
 #'   }
 #' 
 plsDA <- 
-function(variables, group, autosel = TRUE, comps = 2,
-         validation = NULL, learn = NULL, test = NULL, scaled=TRUE)
+function(variables, group, autosel = TRUE, comps = 2, validation = NULL, 
+         learn = NULL, test = NULL, cv = "LOO", k = NULL)
 {
-  # Perform a PLS discriminant analysis
-  # variables: matrix or data.frame with explanatory variables
-  # group: vector or factor with group membership
-  # autosel: logical indicating automatic selection of PLS comps
-  # comps: number of PLS components (only when autosel=FALSE)
-  # validation: NULL, "crossval", "learntest"
-  # learn: vector of learn-set
-  # test: vector of test-set
-  # scaled: logical indicating whether to scale the data
-  
   # check inputs
   verify_Xy = my_verify(variables, group, na.rm=FALSE)
   X = verify_Xy$X
@@ -100,7 +96,7 @@ function(variables, group, autosel = TRUE, comps = 2,
   } else {
     vali = validation %in% c("crossval", "learntest")
     if (!vali)
-      stop("\nIncorrect type of validation")
+      stop("nIncorrect type of validation")
   }
   
   # how many observations and variables
@@ -115,7 +111,7 @@ function(variables, group, autosel = TRUE, comps = 2,
   
   ## plsDA with no validation
   if (validation %in% c("none","crossval")) {
-    get_plsda = my_plsDA(X, y, 1:n, 1:n, autosel, comps)
+    get_plsda = my_plsDA(X, y, 1:n, 1:n, autosel, comps, cv=cv, k=k)
     err = 1 - sum(diag(get_plsda$conf)) / n
   }
   
@@ -127,7 +123,7 @@ function(variables, group, autosel = TRUE, comps = 2,
     if (any(test) <= 0 || any(test) > n)
       stop("\nsubscript out of bounds in 'test' set")
     # apply plsDA
-    get_plsda = my_plsDA(X, y, learn, test, autosel, comps, scaled)
+    get_plsda = my_plsDA(X, y, learn, test, autosel, comps)
     # misclassification error rate
     err = 1 - sum(diag(get_plsda$conf))/length(test)
   }
@@ -136,9 +132,12 @@ function(variables, group, autosel = TRUE, comps = 2,
   specs = list(n=n, p=p, ng=ng, glevs=glevs, 
                nobs_group=nobs_group, validation=validation)
   ## results
+  ### added loadings and y.loadings
   structure(list(functions = get_plsda$coeffs, 
                  confusion = get_plsda$conf,
                  scores = get_plsda$Disc, 
+                 loadings = get_plsda$loadings,
+                 y.loadings = get_plsda$y.loadings,
                  classification = get_plsda$pred_class,
                  error_rate = err,
                  components = get_plsda$components,
@@ -150,3 +149,4 @@ function(variables, group, autosel = TRUE, comps = 2,
                  specs = specs),
             class = "plsda")
 }
+

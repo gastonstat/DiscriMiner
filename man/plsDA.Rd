@@ -4,7 +4,7 @@
 \usage{
   plsDA(variables, group, autosel = TRUE, comps = 2,
     validation = NULL, learn = NULL, test = NULL,
-    scaled = TRUE)
+    cv = "LOO", k = NULL)
 }
 \arguments{
   \item{variables}{matrix or data frame with explanatory
@@ -31,8 +31,11 @@
   Only used when \code{validation="learntest"}. Default
   \code{NULL}}
 
-  \item{scaled}{logical indicating whether to scale the
-  data (default \code{TRUE})}
+  \item{cv}{string indicating the type of crossvalidation.
+  Avialable options are \code{"LOO"} (Leave-One-Out) and
+  \code{"LKO"} (Leave-K fold-Out)}
+
+  \item{k}{fold left out if using LKO (useually 7 or 10)}
 }
 \value{
   An object of class \code{"plsda"}, basically a list with
@@ -43,6 +46,10 @@
   \item{confusion}{confusion matrix}
 
   \item{scores}{discriminant scores for each observation}
+
+  \item{loadings}{loadings}
+
+  \item{y.loadings}{y loadings}
 
   \item{classification}{assigned class}
 
@@ -64,7 +71,8 @@
 }
 \description{
   Performs a Partial Least Squares (PLS) Discriminant
-  Analysis
+  Analysis by giving the option to include a random leave-k
+  fold out cross validation
 }
 \details{
   When \code{validation=NULL} leave-one-out (loo)
@@ -92,13 +100,14 @@
   # linear discriminant analysis with learn-test validation
   learning = c(1:40, 51:90, 101:140)
   testing = c(41:50, 91:100, 141:150)
-  my_pls3 = plsDA(iris[,1:4], iris$Species, validation="learntest", learn=learning, test=testing)
+  my_pls3 = plsDA(iris[,1:4], iris$Species, validation="learntest",
+      learn=learning, test=testing)
   my_pls3$confusion
   my_pls3$error_rate
   }
 }
 \author{
-  Gaston Sanchez
+  Charles Determan Jr, Gaston Sanchez
 }
 \references{
   Tenenhaus M. (1998) \emph{La Regression PLS}. Editions

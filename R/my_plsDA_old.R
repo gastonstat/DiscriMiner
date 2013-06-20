@@ -1,20 +1,16 @@
-#' @title PLS Discriminant Analysis
-#' 
-#' @description Perform a PLS discriminant analysis
-#' 
-#' @param X matrix or data.frame with explanatory variables
-#' @param y vector or factor with group membership
-#' @param learn vector of learning observations
-#' @param test vector of testing observations
-#' @param autosel logical indicating automatic selection of PLS comps
-#' @param comps number of PLS components (only when autosel=FALSE)
-#' @param cv cross validation method. Options are \code{"LOO"} (Leave-One-Out)
-#' and \code{"LKO"} (Leave-K fold-Out)
-#' @param k fold left out if using LKO
-#' @keywords internal
-my_plsDA2 <- 
-function(X, y, learn, test, autosel, comps, cv = "LOO", k = NA)
+# ol version of my_plsDA
+my_plsDA_old <- 
+function(X, y, learn, test, autosel, comps, scaled)
 {
+  # Perform a PLS discriminant analysis
+  # X: matrix or data.frame with explanatory variables
+  # y: vector or factor with group membership
+  # learn: vector of learning observations
+  # test: vector of testing observations
+  # autosel: logical indicating automatic selection of PLS comps
+  # comps: number of PLS components (only when autosel=FALSE)
+  # scaled: logical indicating whether to scale the data
+  
   ## prepare ingredients
   ntest = length(test)
   # binarize y
@@ -23,9 +19,7 @@ function(X, y, learn, test, autosel, comps, cv = "LOO", k = NA)
   # dimensions
   n = nrow(X[learn,])
   p = ncol(X)
-  q = ncol(Y)
-  #added in k for leave-k-out cross validation
-  #k=10
+  q = ncol(Y)  
   # determine number of PLS components to be computed
   # taking into account rank of X
   Xsvd = svd(X[learn,], nu=0, nv=0)
@@ -38,7 +32,7 @@ function(X, y, learn, test, autosel, comps, cv = "LOO", k = NA)
   }  
   if (nc == n) nc = n - 1
   # standardizing data
-  X.old = scale(X[learn,])
+  X.old = scale(X[learn,], scale=scaled)
   Y.old = scale(Y)
   # creating matrices to store results
   Wh = matrix(0, p, nc)
@@ -50,10 +44,6 @@ function(X, y, learn, test, autosel, comps, cv = "LOO", k = NA)
   RSS = rbind(rep(n-1,q), matrix(NA, nc, q))
   PRESS = matrix(NA, nc, q)
   Q2 = matrix(NA, nc, q)
-  ### remove random kth out
-  if(cv=="LKO"){
-    fold=split(sample(1:n), rep(1:k, length=n))
-  }
   
   ## PLS2 algorithm
   for (h in 1:nc)
@@ -65,7 +55,7 @@ function(X, y, learn, test, autosel, comps, cv = "LOO", k = NA)
     repeat
     {
       w.new = t(X.old) %*% u.new / sum(u.new^2)
-      w.new = w.new / sqrt(sum(w.new^2))# normalize w.old
+      w.new = w.new / sqrt(sum(w.new^2)) # normalize w.old
       t.new = X.old %*% w.new
       c.new = t(Y.old) %*% t.new / sum(t.new^2)
       u.new = Y.old %*% c.new / sum(c.new^2)
@@ -76,57 +66,28 @@ function(X, y, learn, test, autosel, comps, cv = "LOO", k = NA)
     } 
     p.new = t(X.old) %*% t.new / sum(t.new^2)
     
-    # Cross validation
+    # leave-one-out cross validation
     RSS[h+1,] =  colSums((Y.old - t.new%*%t(c.new))^2)
     press = matrix(0, n, q)
-    
-    ### Random leave-k-out
-    if(cv=="LKO"){
-      for (i in 1:k)
-      {   #removes row i, only column 1
-        omit=fold[[i]]
-        uh.si <- Y.old[-omit,1]
-        wh.siold <- rep(1,p)
-        itcv <- 1
-        repeat
-        {
-          wh.si <- t(X.old[-omit,]) %*% uh.si / sum(uh.si^2)
-          wh.si <- wh.si / sqrt(sum(wh.si^2))
-          th.si <- X.old[-omit,] %*% wh.si
-          ch.si <- t(Y.old[-omit,]) %*% th.si / sum(th.si^2)
-          uh.si <- Y.old[-omit,] %*% ch.si / sum(ch.si^2)
-          wsi.dif <- wh.si - wh.siold
-          wh.siold <- wh.si
-          if (sum(wsi.dif^2)<1e-06 || itcv==100) break
-          itcv <- itcv + 1
-        }
-        Yhat.si = (X.old[omit,] %*% wh.si) %*% t(ch.si) 
-        press[omit,] = (Y.old[omit,] - Yhat.si)^2
-      }
-    }
-    
-    # Leave-One-Out
-    if(cv=="LOO"){
-      for (i in 1:n)
+    for (i in 1:n)
+    {
+      uh.si = Y.old[-i,1]
+      wh.siold = rep(1,p)
+      itcv = 1
+      repeat
       {
-        uh.si = Y.old[-i,1]
-        wh.siold = rep(1,p)
-        itcv = 1
-        repeat
-        {
-          wh.si = t(X.old[-i,]) %*% uh.si / sum(uh.si^2)
-          wh.si = wh.si / sqrt(sum(wh.si^2))
-          th.si = X.old[-i,] %*% wh.si
-          ch.si = t(Y.old[-i,]) %*% th.si / sum(th.si^2)
-          uh.si = Y.old[-i,] %*% ch.si / sum(ch.si^2)
-          wsi.dif = wh.si - wh.siold
-          wh.siold = wh.si
-          if (sum(wsi.dif^2)<1e-06 || itcv==100) break
-          itcv = itcv + 1
-        }
-        Yhat.si = (X.old[i,] %*% wh.si) %*% t(ch.si) 
-        press[i,] = (Y.old[i,] - Yhat.si)^2
+        wh.si = t(X.old[-i,]) %*% uh.si / sum(uh.si^2)
+        wh.si = wh.si / sqrt(sum(wh.si^2))
+        th.si = X.old[-i,] %*% wh.si
+        ch.si = t(Y.old[-i,]) %*% th.si / sum(th.si^2)
+        uh.si = Y.old[-i,] %*% ch.si / sum(ch.si^2)
+        wsi.dif = wh.si - wh.siold
+        wh.siold = wh.si
+        if (sum(wsi.dif^2)<1e-06 || itcv==100) break
+        itcv = itcv + 1
       }
+      Yhat.si = (X.old[i,] %*% wh.si) %*% t(ch.si) 
+      press[i,] = (Y.old[i,] - Yhat.si)^2
     }
     PRESS[h,] = colSums(press)
     Q2[h,] = 1 - PRESS[h,]/RSS[h,]
@@ -186,11 +147,8 @@ function(X, y, learn, test, autosel, comps, cv = "LOO", k = NA)
     Rd.mat[1:j,j] = Rdy[1:j]
   # variable importance
   VIP = sqrt((Wh^2) %*% Rd.mat %*% diag(p/cumsum(Rdy), ncs, ncs))
-  
+
   ## adding names
-  ### added Ws and Ch for loadings and Y.loadings respectively
-  dimnames(Ws) = list(colnames(X), paste(rep("w*",ncs),1:ncs,sep=""))
-  dimnames(Ch) = list(colnames(Y), paste(rep("c",ncs),1:ncs,sep=""))
   dimnames(Th) = list(rownames(X[learn,]), paste(rep("t",ncs),1:ncs,sep=""))
   dimnames(Ph) = list(colnames(X), paste(rep("p",ncs),1:ncs,sep=""))
   dimnames(Bs) = list(colnames(X), colnames(Y))
@@ -210,9 +168,8 @@ function(X, y, learn, test, autosel, comps, cv = "LOO", k = NA)
   # confusion matrix
   conf = table(original=y[test], predicted=pred_class)
   # results
-  ### added loadings and y.loadings
   res = list(coeffs=coeffs, conf=conf, Disc=Disc, pred_class=pred_class, 
-             components=Th, loadings=round(Ws,4), y.loadings=round(Ch,4), Q2T=Q2T, R2=R2, VIP=VIP, 
-             cor_tx=cor_tx, cor_ty=cor_ty)
+             components=Th, Q2T=Q2T, R2=R2, VIP=VIP, 
+              cor_tx=cor_tx, cor_ty=cor_ty)
   res
 }

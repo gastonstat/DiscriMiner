@@ -1,8 +1,8 @@
-\name{my_plsDA2}
-\alias{my_plsDA2}
+\name{my_plsDA}
+\alias{my_plsDA}
 \title{PLS Discriminant Analysis}
 \usage{
-  my_plsDA2(X, y, learn, test, autosel, comps, cv = "LOO",
+  my_plsDA(X, y, learn, test, autosel, comps, cv = "LOO",
     k = NA)
 }
 \arguments{

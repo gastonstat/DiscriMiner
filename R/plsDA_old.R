@@ -1,9 +1,8 @@
-#' @title PLS Discriminant Analysis 2
+#' PLS Discriminant Analysis
 #' 
-#' @description Performs a Partial Least Squares (PLS) Discriminant Analysis
-#' by giving the option to include a random leave-k fold out cross validation
+#' Performs a Partial Least Squares (PLS) Discriminant Analysis
 #' 
-#' @details When \code{validation=NULL} leave-one-out (loo) cross-validation is
+#' When \code{validation=NULL} leave-one-out (loo) cross-validation is
 #' performed. \cr When \code{validation="learntest"} validation is performed by
 #' providing a learn-set and a test-set of observations. \cr
 #' 
@@ -19,17 +18,13 @@
 #' \code{validation="learntest"}. Default \code{NULL}
 #' @param test optional vector of indices for a test-set. Only used when
 #' \code{validation="learntest"}. Default \code{NULL}
-#' @param cv string indicating the type of crossvalidation.
-#' Avialable options are \code{"LOO"} (Leave-One-Out)
-#' and \code{"LKO"} (Leave-K fold-Out)
-#' @param k fold left out if using LKO (useually 7 or 10)
+#' @param scaled logical indicating whether to scale the data (default
+#' \code{TRUE})
 #' @return An object of class \code{"plsda"}, basically a list with the
 #' following elements:
 #' @return \item{functions}{table with discriminant functions}
 #' @return \item{confusion}{confusion matrix}
 #' @return \item{scores}{discriminant scores for each observation}
-#' @return \item{loadings}{loadings}
-#' @return \item{y.loadings}{y loadings}
 #' @return \item{classification}{assigned class}
 #' @return \item{error_rate}{misclassification error rate}
 #' @return \item{components}{PLS components}
@@ -38,7 +33,7 @@
 #' @return \item{VIP}{Variable Importance for Projection}
 #' @return \item{comp_vars}{correlations between components and variables}
 #' @return \item{comp_group}{correlations between components and groups}
-#' @author Charles Determan Jr, Gaston Sanchez
+#' @author Gaston Sanchez
 #' @seealso \code{\link{classify}}, \code{\link{geoDA}}, \code{\link{linDA}},
 #' \code{\link{quaDA}}
 #' @references Tenenhaus M. (1998) \emph{La Regression PLS}. Editions Technip,
@@ -47,7 +42,8 @@
 #' Perez-Enciso M., Tenenhaus M. (2003) \emph{Prediction of clinical outcome
 #' with microarray data: a partial least squares discriminant analysis (PLS-DA)
 #' approach}. Human Genetics 112: 581-592.
-#' @export
+#' @keywords internal
+#' @note This is a previous version of plsDA. Not used anymore.
 #' @examples
 #' 
 #'   \dontrun{
@@ -55,30 +51,39 @@
 #'   data(iris)
 #' 
 #'   # PLS discriminant analysis specifying number of components = 2
-#'   my_pls1 = plsDA2(iris[,1:4], iris$Species, autosel=FALSE, comps=2)
+#'   my_pls1 = plsDA(iris[,1:4], iris$Species, autosel=FALSE, comps=2)
 #'   my_pls1$confusion
 #'   my_pls1$error_rate
 #'   # plot circle of correlations
 #'   plot(my_pls1)
 #' 
 #'   # PLS discriminant analysis with automatic selection of components
-#'   my_pls2 = plsDA2(iris[,1:4], iris$Species, autosel=TRUE)
+#'   my_pls2 = plsDA(iris[,1:4], iris$Species, autosel=TRUE)
 #'   my_pls2$confusion
 #'   my_pls2$error_rate
 #'   
 #'   # linear discriminant analysis with learn-test validation
 #'   learning = c(1:40, 51:90, 101:140)
 #'   testing = c(41:50, 91:100, 141:150)
-#'   my_pls3 = plsDA2(iris[,1:4], iris$Species, validation="learntest", 
-#'       learn=learning, test=testing)
+#'   my_pls3 = plsDA(iris[,1:4], iris$Species, validation="learntest", learn=learning, test=testing)
 #'   my_pls3$confusion
 #'   my_pls3$error_rate
 #'   }
 #' 
-plsDA2 <- 
-function(variables, group, autosel = TRUE, comps = 2, validation = NULL, 
-         learn = NULL, test = NULL, cv = "LOO", k = NULL)
+plsDA_old <- 
+function(variables, group, autosel = TRUE, comps = 2,
+         validation = NULL, learn = NULL, test = NULL, scaled=TRUE)
 {
+  # Perform a PLS discriminant analysis
+  # variables: matrix or data.frame with explanatory variables
+  # group: vector or factor with group membership
+  # autosel: logical indicating automatic selection of PLS comps
+  # comps: number of PLS components (only when autosel=FALSE)
+  # validation: NULL, "crossval", "learntest"
+  # learn: vector of learn-set
+  # test: vector of test-set
+  # scaled: logical indicating whether to scale the data
+  
   # check inputs
   verify_Xy = my_verify(variables, group, na.rm=FALSE)
   X = verify_Xy$X
@@ -96,7 +101,7 @@ function(variables, group, autosel = TRUE, comps = 2, validation = NULL,
   } else {
     vali = validation %in% c("crossval", "learntest")
     if (!vali)
-      stop("nIncorrect type of validation")
+      stop("\nIncorrect type of validation")
   }
   
   # how many observations and variables
@@ -111,7 +116,7 @@ function(variables, group, autosel = TRUE, comps = 2, validation = NULL,
   
   ## plsDA with no validation
   if (validation %in% c("none","crossval")) {
-    get_plsda = my_plsDA2(X, y, 1:n, 1:n, autosel, comps, cv=cv, k=k)
+    get_plsda = my_plsDA(X, y, 1:n, 1:n, autosel, comps)
     err = 1 - sum(diag(get_plsda$conf)) / n
   }
   
@@ -123,7 +128,7 @@ function(variables, group, autosel = TRUE, comps = 2, validation = NULL,
     if (any(test) <= 0 || any(test) > n)
       stop("\nsubscript out of bounds in 'test' set")
     # apply plsDA
-    get_plsda = my_plsDA2(X, y, learn, test, autosel, comps)
+    get_plsda = my_plsDA(X, y, learn, test, autosel, comps, scaled)
     # misclassification error rate
     err = 1 - sum(diag(get_plsda$conf))/length(test)
   }
@@ -132,12 +137,9 @@ function(variables, group, autosel = TRUE, comps = 2, validation = NULL,
   specs = list(n=n, p=p, ng=ng, glevs=glevs, 
                nobs_group=nobs_group, validation=validation)
   ## results
-  ### added loadings and y.loadings
   structure(list(functions = get_plsda$coeffs, 
                  confusion = get_plsda$conf,
                  scores = get_plsda$Disc, 
-                 loadings = get_plsda$loadings,
-                 y.loadings = get_plsda$y.loadings,
                  classification = get_plsda$pred_class,
                  error_rate = err,
                  components = get_plsda$components,
@@ -149,4 +151,3 @@ function(variables, group, autosel = TRUE, comps = 2, validation = NULL,
                  specs = specs),
             class = "plsda")
 }
-

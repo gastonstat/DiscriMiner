@@ -1,8 +1,8 @@
 Package: DiscriMiner
 Type: Package
 Title: Tools of the Trade for Discriminant Analysis
-Version: 0.1-24
-Date: 2013-06-19
+Version: 0.1-25
+Date: 2013-06-20
 Authors@R: c(
     person("Gaston", "Sanchez",
     email = "gaston.stat@gmail.com", role = c("aut", "cre")),
@@ -46,14 +46,11 @@ Collate:
     'my_linDA.R'
     'my_mca.R'
     'my_plsDA.R'
-    'my_plsDA2.R'
     'my_quaDA.R'
     'my_tdc.R'
     'my_verify.R'
     'my_withinCov.R'
     'plot.plsda.R'
-    'plsDA.R'
-    'plsDA2.R'
     'print.desda.R'
     'print.disqual.R'
     'print.geoda.R'
@@ -66,3 +63,6 @@ Collate:
     'totalSS.R'
     'withinCov.R'
     'withinSS.R'
+    'my_plsDA_old.R'
+    'plsDA_old.R'
+    'plsDA.R'
