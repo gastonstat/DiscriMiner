@@ -22,6 +22,7 @@
 #' @param cv string indicating the type of crossvalidation.
 #' Avialable options are \code{"LOO"} (Leave-One-Out)
 #' and \code{"LKO"} (Leave-K fold-Out)
+#' @param k fold left out if using LKO (useually 7 or 10)
 #' @return An object of class \code{"plsda"}, basically a list with the
 #' following elements:
 #' @return \item{functions}{table with discriminant functions}
@@ -75,8 +76,8 @@
 #'   }
 #' 
 plsDA2 <- 
-function(variables, group, autosel = TRUE, comps = 2,
-         validation = NULL, learn = NULL, test = NULL, cv="LOO")
+function(variables, group, autosel = TRUE, comps = 2, validation = NULL, 
+         learn = NULL, test = NULL, cv = "LOO", k = NULL)
 {
   # Perform a PLS discriminant analysis
   # variables: matrix or data.frame with explanatory variables
@@ -119,7 +120,7 @@ function(variables, group, autosel = TRUE, comps = 2,
   
   ## plsDA with no validation
   if (validation %in% c("none","crossval")) {
-    get_plsda = my_plsDA2(X, y, 1:n, 1:n, autosel, comps, cv="LOO")
+    get_plsda = my_plsDA2(X, y, 1:n, 1:n, autosel, comps, cv=cv, k=k)
     err = 1 - sum(diag(get_plsda$conf)) / n
   }
   

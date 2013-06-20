@@ -41,6 +41,9 @@ Links
 
 [DiscriMiner slides](http://www.gastonsanchez.com/discriminer)
 
+Acknowledgements
+--------------
+Many thanks to Charles Determan for his contributions to the function `plsDA`
 
 Author Contact
 --------------
