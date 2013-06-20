@@ -42,6 +42,7 @@
 #' Perez-Enciso M., Tenenhaus M. (2003) \emph{Prediction of clinical outcome
 #' with microarray data: a partial least squares discriminant analysis (PLS-DA)
 #' approach}. Human Genetics 112: 581-592.
+#' @export
 #' @examples
 #' 
 #'   \dontrun{
