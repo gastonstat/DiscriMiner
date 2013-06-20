@@ -79,15 +79,6 @@ plsDA2 <-
 function(variables, group, autosel = TRUE, comps = 2, validation = NULL, 
          learn = NULL, test = NULL, cv = "LOO", k = NULL)
 {
-  # Perform a PLS discriminant analysis
-  # variables: matrix or data.frame with explanatory variables
-  # group: vector or factor with group membership
-  # autosel: logical indicating automatic selection of PLS comps
-  # comps: number of PLS components (only when autosel=FALSE)
-  # validation: NULL, "crossval", "learntest"
-  # learn: vector of learn-set
-  # test: vector of test-set
-  
   # check inputs
   verify_Xy = my_verify(variables, group, na.rm=FALSE)
   X = verify_Xy$X
