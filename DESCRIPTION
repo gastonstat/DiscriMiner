@@ -1,8 +1,8 @@
 Package: DiscriMiner
 Type: Package
 Title: Tools of the Trade for Discriminant Analysis
-Version: 0.1-25
-Date: 2013-06-20
+Version: 0.1-26
+Date: 2013-07-12
 Authors@R: c(
     person("Gaston", "Sanchez",
     email = "gaston.stat@gmail.com", role = c("aut", "cre")),
@@ -16,7 +16,7 @@ Description: Functions for Discriminant Analysis and Classification purposes
     covering various methods such as descriptive, geometric, linear, quadratic,
     PLS, as well as qualitative discriminant analyses
 License: GPL-3
-URL: http://www.gastonsanchez.com/discriminer
+URL: http://www.gastonsanchez.com
 LazyData: yes
 Collate:
     'DiscriMiner-package.R'

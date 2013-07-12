@@ -56,7 +56,8 @@
 #'   # quadratic discriminant analysis with learn-test validation
 #'   learning = c(1:40, 51:90, 101:140)
 #'   testing = c(41:50, 91:100, 141:150)
-#'   my_qua3 = quaDA(iris[,1:4], iris$Species, validation="learntest", learn=learning, test=testing)
+#'   my_qua3 = quaDA(iris[,1:4], iris$Species, validation="learntest", 
+#'       learn=learning, test=testing)
 #'   my_qua3$confusion
 #'   my_qua3$error_rate
 #'   }
@@ -64,16 +65,7 @@
 quaDA <- 
 function(variables, group, prior = NULL, validation = NULL, 
          learn = NULL, test = NULL, prob = FALSE)
-{
-  # Perform a geometric predictive discriminant analysis
-  # variables: matrix or data.frame with explanatory variables
-  # group: vector or factor with group membership
-  # prior: vector of prior probabilities (NULL = proportions)
-  # validation: NULL, "crossval", "learntest"
-  # learn: vector of learn-set
-  # test: vector of test-set
-  # prob: logical indicating results in probability terms
-  
+{  
   # check inputs
   verify_Xy = my_verify(variables, group, na.rm=FALSE)
   X = verify_Xy$X
