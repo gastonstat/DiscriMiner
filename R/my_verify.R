@@ -8,7 +8,7 @@ function(x, y, qualitative=FALSE, na.rm=na.rm)
   
   # x matrix or data.frame
   if (is.null(dim(x))) 
-    stop("\nOops, 'variables' is not a matrix")
+    stop("\n'variables' is not a matrix or data.frame")
   # no missing values allowed when na.rm=FALSE
   if (!na.rm) {
     if (length(complete.cases(x)) != nrow(x))
@@ -16,15 +16,15 @@ function(x, y, qualitative=FALSE, na.rm=na.rm)
   }
   # check lengths of x and y
   if (nrow(x) != length(y))
-    stop("\nOoops, 'variables' and 'group' have different lengths")
+    stop("\n'variables' and 'group' have different lengths")
   # y vector or factor
   if (!is.vector(y) && !is.factor(y))
-    stop("\nOoops, 'group' must be a factor")
+    stop("\n'group' must be a factor")
   # make sure y is a factor
   if (!is.factor(y)) y = as.factor(y)
   # no missing values in y
   if (any(!is.finite(y)))
-    stop("\nSorry, no missing values allowed in 'group'")
+    stop("\nNo missing values allowed in 'group'")
   # quantitative or qualitative variables?
   if (!qualitative)
   { # quantitative data
@@ -32,7 +32,7 @@ function(x, y, qualitative=FALSE, na.rm=na.rm)
     if (!is.matrix(x)) x <- as.matrix(x)
     # only numeric values
     if (!is.numeric(x))
-      stop("\nSorry, 'variables' must contain only numeric values")    
+      stop("\n'variables' must contain only numeric values")    
   } else { # data frame with qualitative data
     # variables as data frame with factors
     fac_check = sapply(x, class)
@@ -41,7 +41,9 @@ function(x, y, qualitative=FALSE, na.rm=na.rm)
   }
   
   # verified inputs
-  if (is.null(colnames(x))) colnames(x) = rep("X",1:ncol(x),sep='')
-  if (is.null(rownames(x))) rownames(x) = 1:nrow(x)
+  if (is.null(colnames(x))) 
+    colnames(x) = paste(rep("X", ncol(x)), seq_len(ncol(x)), sep='') 
+  if (is.null(rownames(x))) 
+    rownames(x) = 1L:nrow(x)
   list(X=x, y=y)
 }
