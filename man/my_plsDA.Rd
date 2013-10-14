@@ -3,7 +3,7 @@
 \title{PLS Discriminant Analysis}
 \usage{
   my_plsDA(X, y, learn, test, autosel, comps, cv = "LOO",
-    k = NA)
+    k = NA, retain.models = FALSE)
 }
 \arguments{
   \item{X}{matrix or data.frame with explanatory variables}
@@ -25,6 +25,9 @@
   fold-Out)}
 
   \item{k}{fold left out if using LKO}
+
+  \item{retain.models}{whether to retain lower models (i.e.
+  all lower component results)}
 }
 \description{
   Perform a PLS discriminant analysis

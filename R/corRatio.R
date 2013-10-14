@@ -29,7 +29,7 @@ function(variable, group)
   # group: vector or factor with group memberships
   
   if (!is.numeric(variable)) 
-    stop("\nSorry, 'variabe' must be a numeric vector")
+    stop("\nSorry, 'variable' must be a numeric vector")
   if (!is.factor(group)) group = as.factor(group)
   if (nlevels(group) == 1)
     stop("\nSorry, 'group' has only one category")
