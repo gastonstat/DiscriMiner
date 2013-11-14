@@ -2,7 +2,7 @@ Package: DiscriMiner
 Type: Package
 Title: Tools of the Trade for Discriminant Analysis
 Version: 0.1-29
-Date: 2013-11-01
+Date: 2013-11-14
 Authors@R: c(
     person("Gaston", "Sanchez",
     email = "gaston.stat@gmail.com", role = c("aut", "cre")),
