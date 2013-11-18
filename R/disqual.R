@@ -125,24 +125,33 @@ function(variables, group, validation = NULL,
   if (validation == "crossval")
   {
     # catDA for all observations
-    get_catda = my_catDA(X, y, 1:n, 1:n, autosel, prob)
+    get_catda = my_catDA(X, y, 1L:n, 1L:n, autosel, prob)
     # elements in each group 
     elems_group = vector("list", ng)
-    for (k in 1:ng) {
+    for (k in 1L:ng) {
       elems_group[[k]] = which(group == glevs[k])
     }
     # misclassification error rate
     mer = 0
     # 10 crossvalidation samples
-    for (r in 1:10)
+    for (r in 1L:10)
     {
       test = vector("list", ng)
       test_sizes = floor(n * props / 10)
-      for (k in 1:ng) {
+      for (k in 1L:ng) {
         test[[k]] = sample(elems_group[[k]], test_sizes[k])
       }
       test = unlist(test)
-      learn = (1:n)[-test]
+      learn = (1L:n)[-test]
+      # resample if learn set is not good for crossvalidation
+      bad_learn_sample = test_bad_learn_set(X[learn,])
+      while (bad_learn_sample)
+      {
+        test[[k]] = sample(elems_group[[k]], test_sizes[k])
+        test = unlist(test)
+        learn = (1L:n)[-test]
+        bad_learn_sample = test_bad_learn_set(X[learn,])        
+      }
       # apply DA
       catda_cv = my_catDA(X, y, learn, test, autosel, prob)
       # misclassification error rate
@@ -164,4 +173,21 @@ function(variables, group, validation = NULL,
                  error_rate = err,
                  specs = specs),
             class = "disqual")
+}
+
+
+#' @title Test Bad Learning Set in Disqual
+#' @description Test Bad Learning Set in Disqual
+#' @param learn_data learning dataset
+#' @return whether the learn data has constant values
+#' @keywords internal
+#' @export
+test_bad_learn_set <- function(learn_data)
+{    
+  # build super-indicator matrix Z
+  Z = my_tdc(learn_data)   
+  # number of obs per category
+  nopc = colSums(Z)
+  # are there any zeros?
+  if (any(nopc == 0)) TRUE else FALSE
 }
