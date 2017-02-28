@@ -108,6 +108,7 @@ function(variables, group, prior = NULL, validation = NULL,
       stop("'prior' probabilities must range between [0,1]")
     if (round(sum(prior), 5) != 1)
       stop("'prior' probabilities don't add to 1")
+      props = prior
   } else {
     # prior as proportions
     prior = nobs_group / n
